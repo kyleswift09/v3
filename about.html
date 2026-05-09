@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于项目 - 智能垃圾分类存储机器人</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f0eb; --card: rgba(255,255,255,0.75); --text: #2c2416; --text2: #6b5e4a;
+            --accent: #d4a853; --accent2: #8b6914; --border: rgba(0,0,0,0.06); --radius: 24px;
+            --font-body: 'Inter','Noto Sans SC',sans-serif;
+            --font-display: 'Space Grotesk','Noto Sans SC',sans-serif;
+            --font-accent: 'Georgia','Noto Sans SC',serif;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;background-image:radial-gradient(rgba(212,168,83,0.08) 1px,transparent 1px);background-size:40px 40px;}
+        .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.5);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 4%;display:flex;align-items:center;justify-content:space-between;height:64px;}
+        .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-family:var(--font-display);font-weight:700;font-size:1.2rem;}
+        .nav-logo span{color:var(--accent2);}
+        .nav-links{display:flex;gap:6px;}
+        .nav-links a{text-decoration:none;color:var(--text2);font-size:0.9rem;font-weight:500;padding:8px 16px;border-radius:40px;}
+        .nav-links a:hover,.nav-links a.active{background:var(--accent);color:#fff;}
+        .lang-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-size:0.85rem;font-weight:600;}
+        .lang-btn:hover{background:var(--accent2);}
+        .content{max-width:1100px;margin:0 auto;padding:100px 4% 50px;}
+        .hero{text-align:center;margin-bottom:50px;}
+        .hero h1{font-family:var(--font-accent);font-size:2.8rem;font-weight:900;}
+        .hero .line{width:60px;height:3px;background:var(--accent);margin:16px auto;}
+        .hero p{color:var(--text2);font-size:1.1rem;}
+
+        .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:40px;}
+        .card{
+            background:var(--card); backdrop-filter:blur(12px);
+            border:1px solid var(--border);border-radius:var(--radius);
+            padding:28px 24px;transition:0.3s;
+        }
+        .card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.05);border-color:var(--accent);}
+        .card h3{font-family:var(--font-display);font-size:1.2rem;color:var(--accent2);margin-bottom:12px;}
+        .card p,.card li{color:var(--text2);font-size:0.9rem;line-height:1.6;}
+        .card ul{list-style:none;padding:0;}
+        .card ul li::before{content:'▸ ';color:var(--accent);}
+
+        .hardware-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-bottom:40px;}
+        .hw-card{
+            background:var(--card); backdrop-filter:blur(12px);
+            border:1px solid var(--border);border-radius:16px;
+            padding:20px 14px;text-align:center;transition:0.3s;
+        }
+        .hw-card:hover{transform:translateY(-4px);border-color:var(--accent);}
+        .hw-card img{width:100%;height:110px;object-fit:contain;border-radius:10px;margin-bottom:10px;background:rgba(255,255,255,0.5);}
+        .hw-card h4{font-family:var(--font-display);font-size:0.9rem;color:var(--text);margin-bottom:4px;}
+        .hw-card p{color:var(--text2);font-size:0.8rem;}
+
+        .section-title{
+            font-family:var(--font-accent);font-size:1.8rem;font-weight:900;
+            margin:40px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);
+            display:flex;align-items:center;gap:12px;
+        }
+        @media(max-width:768px){
+            .grid2{grid-template-columns:1fr;}
+            .hero h1{font-size:2rem;}
+        }
+    </style>
+</head>
+<body>
+<nav class="nav">
+    <a href="index.html" class="nav-logo">♻ Smart<span>Sort</span></a>
+    <div class="nav-links">
+        <a href="index.html" data-key="nav_home">首页</a>
+        <a href="about.html" class="active" data-key="nav_about">关于</a>
+        <a href="team.html" data-key="nav_team">团队</a>
+        <a href="philosophy.html" data-key="nav_phil">理念</a>
+    </div>
+    <button class="lang-btn" id="langBtn">🌐 English</button>
+</nav>
+
+<div class="content">
+    <div class="hero">
+        <h1 data-key="title">关于项目</h1>
+        <div class="line"></div>
+        <p data-key="sub">智能垃圾分类存储机器人 · 第44组</p>
+    </div>
+    <div class="grid2">
+        <div class="card">
+            <h3 data-key="c1t">项目目标</h3>
+            <p data-key="c1d">设计并制造一个能与用户交互的智能垃圾分类存储机器人，通过颜色传感器分辨垃圾种类，自动分类存储，具备物联网监控能力。</p>
+            <img src="media/exploded-view.png" style="width:100%;margin-top:16px;border-radius:10px;">
+        </div>
+        <div class="card">
+            <h3 data-key="c2t">核心技术</h3>
+            <ul>
+                <li data-key="c2i1">FPGA开发板 (Altera Cyclone IV) 核心控制</li>
+                <li data-key="c2i2">TCS34725颜色传感器识别颜色</li>
+                <li data-key="c2i3">HC-SR04超声波测距传感器</li>
+                <li data-key="c2i4">L610 4G LTE Cat.1 无线通信模组</li>
+                <li data-key="c2i5">Android上位机 (Java + SQLite)</li>
+                <li data-key="c2i6">伺服电机驱动分类存储机构</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3 data-key="c3t">工作模式</h3>
+            <p><strong data-key="c3m1">操作模式：</strong><span data-key="c3d1">全自动运行，LCD+语音引导用户投放</span></p>
+            <p style="margin-top:8px;"><strong data-key="c3m2">维护模式：</strong><span data-key="c3d2">GUI界面测试电机、传感器，方便检修</span></p>
+        </div>
+        <div class="card">
+            <h3 data-key="c4t">物联网能力</h3>
+            <p data-key="c4d">L610模块实时上报状态至云端，手机端随时查看；存储不足时自动告警物业中心。</p>
+        </div>
+    </div>
+    <div class="section-title"><span>🔩</span><span data-key="hardware_title">硬件组件</span></div>
+    <div class="hardware-grid" id="hwGrid"></div>
+    <div class="section-title"><span>🔗</span><span data-key="arch_title">系统架构</span></div>
+    <div class="grid2" id="archGrid"></div>
+</div>
+
+<script>
+    const hwData = [
+        {img:'media/fpga-board.jpg',name:'hw1',desc:'hw1d'},
+        {img:'media/stm32f411re.jpg',name:'hw2',desc:'hw2d'},
+        {img:'media/servo.png',name:'hw3',desc:'hw3d'},
+        {img:'media/l610.jpg',name:'hw4',desc:'hw4d'},
+        {img:'media/tcs34725.png',name:'hw5',desc:'hw5d'},
+        {img:'media/hc-sr04.png',name:'hw6',desc:'hw6d'},
+        {img:'media/android-host.png',name:'hw7',desc:'hw7d'}
+    ];
+    const hwContainer = document.getElementById('hwGrid');
+    hwData.forEach(hw => {
+        const card = document.createElement('div');
+        card.className = 'hw-card';
+        card.innerHTML = `<img src="${hw.img}" alt=""><h4 data-key="${hw.name}"></h4><p data-key="${hw.desc}"></p>`;
+        hwContainer.appendChild(card);
+    });
+
+    const archs = ['a1','a2','a3','a4','a5','a6'];
+    const archContainer = document.getElementById('archGrid');
+    archs.forEach(key => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3 data-key="${key}t"></h3><p data-key="${key}d"></p>`;
+        archContainer.appendChild(card);
+    });
+
+    const zh = {
+        nav_home:'首页',nav_about:'关于',nav_team:'团队',nav_phil:'理念',
+        title:'关于项目',sub:'智能垃圾分类存储机器人 · 第44组',
+        c1t:'项目目标',c1d:'设计并制造一个能与用户交互的智能垃圾分类存储机器人，通过颜色传感器分辨垃圾种类，自动分类存储，具备物联网监控能力。',
+        c2t:'核心技术',c2i1:'FPGA开发板 (Altera Cyclone IV) 核心控制',c2i2:'TCS34725颜色传感器识别颜色',c2i3:'HC-SR04超声波测距传感器',c2i4:'L610 4G LTE Cat.1 无线通信模组',c2i5:'Android上位机 (Java + SQLite)',c2i6:'伺服电机驱动分类存储机构',
+        c3t:'工作模式',c3m1:'操作模式：',c3d1:'全自动运行，LCD+语音引导用户投放',c3m2:'维护模式：',c3d2:'GUI界面测试电机、传感器，方便检修',
+        c4t:'物联网能力',c4d:'L610模块实时上报状态至云端，手机端随时查看；存储不足时自动告警物业中心。',
+        hardware_title:'硬件组件',
+        hw1:'FPGA开发板',hw1d:'Altera Cyclone IV',
+        hw2:'微控制器',hw2d:'STM32F411RE',
+        hw3:'伺服电机',hw3d:'精确分类驱动',
+        hw4:'L610 通信模组',hw4d:'4G Cat.1',
+        hw5:'颜色传感器',hw5d:'TCS34725 RGB识别',
+        hw6:'距离传感器',hw6d:'HC-SR04 超声波测距',
+        hw7:'Android上位机',hw7d:'人机交互界面',
+        arch_title:'系统架构',
+        a1t:'Android上位机',a1d:'中英文切换 · 语音引导 · LCD显示 · 云端通信',
+        a2t:'微控制器单元',a2d:'命令生成 · 数据中转 · 与FPGA及云端通信',
+        a3t:'FPGA开发板',a3d:'电机控制 · 传感器读取 · 状态显示',
+        a4t:'L610无线模组',a4d:'4G通信 · 数据上报 · 告警推送',
+        a5t:'颜色传感器',a5d:'RGB识别 · 垃圾分类判定',
+        a6t:'测距传感器',a6d:'用户距离检测 · 10cm安全防护'
+    };
+    const en = {
+        nav_home:'Home',nav_about:'About',nav_team:'Team',nav_phil:'Philosophy',
+        title:'About Project',sub:'Smart Garbage Sorting Robot · Group 44',
+        c1t:'Project Goal',c1d:'Design and build an interactive smart garbage sorting robot with color sensor recognition, auto sorting, and IoT monitoring.',
+        c2t:'Core Technologies',c2i1:'FPGA Board (Altera Cyclone IV) Core Control',c2i2:'TCS34725 Color Sensor',c2i3:'HC-SR04 Ultrasonic Distance Sensor',c2i4:'L610 4G LTE Cat.1 Module',c2i5:'Android Host (Java + SQLite)',c2i6:'Servo Motor Sorting Mechanism',
+        c3t:'Working Modes',c3m1:'Operation Mode: ',c3d1:'Fully automatic, LCD + voice guidance',c3m2:'Maintenance Mode: ',c3d2:'GUI for testing motors and sensors',
+        c4t:'IoT Capability',c4d:'Real-time status via L610 to cloud, mobile viewing, auto alert when full.',
+        hardware_title:'Hardware Components',
+        hw1:'FPGA Board',hw1d:'Altera Cyclone IV',
+        hw2:'Microcontroller',hw2d:'STM32F411RE',
+        hw3:'Servo Motor',hw3d:'Precision drive',
+        hw4:'L610 Module',hw4d:'4G Cat.1',
+        hw5:'Color Sensor',hw5d:'TCS34725 RGB Recognition',
+        hw6:'Distance Sensor',hw6d:'HC-SR04 Ultrasonic',
+        hw7:'Android Host',hw7d:'Human-Machine Interface',
+        arch_title:'System Architecture',
+        a1t:'Android Host',a1d:'Bilingual switch · Voice guidance · LCD · Cloud',
+        a2t:'Microcontroller Unit',a2d:'Command generation · Data relay · FPGA & Cloud',
+        a3t:'FPGA Board',a3d:'Motor control · Sensor reading · Status display',
+        a4t:'L610 Module',a4d:'4G communication · Data report · Alert push',
+        a5t:'Color Sensor',a5d:'RGB recognition · Waste classification',
+        a6t:'Distance Sensor',a6d:'User distance detection · 10cm safety'
+    };
+    const dict = {zh, en};
+    let current = 'zh';
+    function apply(lang) {
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.dataset.key;
+            if (dict[lang][key]) el.textContent = dict[lang][key];
+        });
+    }
+    document.getElementById('langBtn').addEventListener('click', () => {
+        current = current === 'zh' ? 'en' : 'zh';
+        document.getElementById('langBtn').textContent = current === 'zh' ? '🌐 English' : '🌐 中文';
+        apply(current);
+    });
+    apply('zh');
+</script>
+</body>
+</html>

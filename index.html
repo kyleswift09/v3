@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能垃圾分类存储机器人</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f0eb;
+            --card: rgba(255,255,255,0.75);
+            --text: #2c2416;
+            --text2: #6b5e4a;
+            --accent: #d4a853;
+            --accent2: #8b6914;
+            --glass: rgba(255,255,255,0.5);
+            --blur: blur(16px);
+            --border: rgba(0,0,0,0.06);
+            --shadow: 0 8px 32px rgba(0,0,0,0.06);
+            --radius: 24px;
+            --font-body: 'Inter', 'Noto Sans SC', sans-serif;
+            --font-display: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            --font-accent: 'Georgia', 'Noto Sans SC', serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg); color: var(--text);
+            line-height: 1.5; -webkit-font-smoothing: antialiased;
+            background-image: radial-gradient(rgba(212,168,83,0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .nav {
+            position: fixed; top:0; left:0; right:0; z-index:100;
+            background: var(--glass); backdrop-filter: var(--blur);
+            border-bottom: 1px solid var(--border);
+            padding: 0 4%; display:flex; align-items:center; justify-content:space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text);
+            font-family:var(--font-display); font-weight:700; font-size:1.2rem; letter-spacing:-0.5px;
+        }
+        .nav-logo span { color:var(--accent2); }
+        .nav-links { display:flex; gap:6px; }
+        .nav-links a {
+            text-decoration:none; color:var(--text2); font-size:0.9rem; font-weight:500;
+            padding:8px 16px; border-radius:40px; transition:0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active { background:var(--accent); color:#fff; }
+        .lang-btn {
+            background:var(--accent); color:#fff; border:none;
+            padding:8px 18px; border-radius:40px; cursor:pointer;
+            font-size:0.85rem; font-weight:600; transition:0.2s;
+        }
+        .lang-btn:hover { background:var(--accent2); }
+
+        .hero-carousel { padding: 90px 4% 30px; max-width:1300px; margin:0 auto; }
+        .carousel-container {
+            position:relative; border-radius:var(--radius); overflow:hidden;
+            aspect-ratio:16/7; min-height:380px;
+            box-shadow:var(--shadow); border:1px solid var(--border);
+        }
+        .carousel-slide {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            opacity:0; transition:opacity 0.7s; pointer-events:none;
+            background:#e8e0d5;
+            display:flex;
+        }
+        .carousel-slide.active { opacity:1; pointer-events:auto; }
+        .carousel-slide img { object-fit:cover; display:block; }
+        .slide-overlay {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            background:linear-gradient(to right, rgba(245,240,235,0.92) 0%, rgba(245,240,235,0.6) 35%, rgba(245,240,235,0.2) 65%, transparent 100%);
+            z-index:2;
+        }
+        .slide-content {
+            position:absolute; left:6%; top:50%; transform:translateY(-50%);
+            z-index:3; max-width:45%;
+        }
+        .slide-tag {
+            display:inline-block; padding:5px 16px;
+            background:rgba(212,168,83,0.15); color:var(--accent2);
+            border-radius:20px; font-size:0.75rem; font-weight:700; letter-spacing:1px;
+            margin-bottom:16px;
+        }
+        .slide-title {
+            font-family:var(--font-accent); font-size:clamp(2rem,4vw,3rem);
+            font-weight:900; color:var(--text); margin-bottom:10px; line-height:1.2;white-space: nowrap;
+        }
+        .slide-desc { font-size:1.05rem; color:var(--text2); margin-bottom:18px; }
+        .slide-line { width:60px; height:3px; background:var(--accent); border-radius:2px; }
+        .carousel-btn {
+            position:absolute; top:50%; transform:translateY(-50%);
+            width:44px; height:44px; border-radius:50%;
+            background:rgba(255,255,255,0.7); backdrop-filter:blur(8px);
+            border:1px solid var(--border); color:var(--text); font-size:1.2rem;
+            cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center;
+            transition:0.2s;
+        }
+        .carousel-btn:hover { background:var(--accent); color:#fff; }
+        .carousel-btn.prev { left:14px; }
+        .carousel-btn.next { right:14px; }
+        .carousel-dots {
+            position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
+            display:flex; gap:8px; z-index:10;
+        }
+        .dot { width:8px; height:8px; border-radius:50%; background:#c4b998; cursor:pointer; transition:0.2s; }
+        .dot.active { background:var(--accent); width:24px; border-radius:6px; }
+
+        .section { max-width:1200px; margin:0 auto; padding:40px 4%; }
+        .sec-title {
+            display:flex; align-items:center; gap:14px; margin-bottom:30px;
+        }
+        .sec-title h2 {
+            font-family:var(--font-accent); font-size:2rem; font-weight:900;
+            color:var(--text); white-space:nowrap;
+        }
+        .sec-title .line { flex:1; height:1px; background:var(--border); margin-left:10px; }
+        .sec-title .icon { font-size:1.6rem; }
+
+        .video-wrap {
+            max-width:800px; margin:0 auto; border-radius:var(--radius);
+            overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--border);
+        }
+        .video-wrap video { width:100%; display:block; }
+
+        /* 不规则卡片布局 */
+        .masonry {
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(140px, auto);
+            gap:20px;
+        }
+        .masonry .card {
+            background:var(--card); backdrop-filter:var(--blur);
+            border:1px solid var(--border); border-radius:var(--radius);
+            padding:28px 22px; transition:0.3s;
+            display:flex; flex-direction:column; justify-content:center;
+        }
+        .masonry .card:hover {
+            transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.08);
+            border-color:var(--accent);
+        }
+        .masonry .card:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+        .masonry .card:nth-child(2) { grid-column: span 2; grid-row: span 1; }
+        .masonry .card:nth-child(3) { grid-column: span 2; grid-row: span 1; }
+        .masonry .card:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+        .masonry .card:nth-child(5) { grid-column: span 1; grid-row: span 1; }
+        .masonry .card:nth-child(6) { grid-column: span 2; grid-row: span 1; }
+
+        .card .c-icon { font-size:2rem; margin-bottom:8px; }
+        .card h3 {
+            font-family:var(--font-display); font-size:1.1rem; font-weight:700;
+            margin-bottom:4px;
+        }
+        .card p { color:var(--text2); font-size:0.9rem; }
+        .card .card-sub {
+            font-size:0.8rem; color:var(--accent2); margin-top:6px; font-weight:500;
+        }
+
+        .arch-grid {
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap:16px;
+        }
+        .arch-card {
+            background:var(--card); backdrop-filter:var(--blur);
+            border:1px solid var(--border); border-radius:var(--radius);
+            padding:24px 18px; text-align:center; transition:0.3s;
+        }
+        .arch-card:hover { border-color:var(--accent); transform:translateY(-3px); }
+        .arch-card .a-icon { font-size:1.8rem; margin-bottom:8px; }
+        .arch-card h4 { font-family:var(--font-display); font-size:1rem; margin-bottom:4px; }
+        .arch-card p { color:var(--text2); font-size:0.85rem; }
+
+        footer {
+            text-align:center; padding:30px 5%; color:var(--text2);
+            font-size:0.8rem; border-top:1px solid var(--border); margin-top:40px;
+        }
+        footer .line { width:50px; height:2px; background:var(--accent); margin:8px auto 0; }
+
+        @media (max-width:768px) {
+            .masonry { grid-template-columns:1fr; }
+            .masonry .card:nth-child(n) { grid-column:span 1; }
+            .arch-grid { grid-template-columns:1fr 1fr; }
+            .carousel-container { aspect-ratio:16/10; min-height:260px; }
+            .slide-content { max-width:65%; }
+            .slide-title { font-size:1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <a href="index.html" class="nav-logo">♻ Smart<span>Sort</span></a>
+    <div class="nav-links">
+        <a href="index.html" class="active" data-key="nav_home">首页</a>
+        <a href="about.html" data-key="nav_about">关于</a>
+        <a href="team.html" data-key="nav_team">团队</a>
+        <a href="philosophy.html" data-key="nav_phil">理念</a>
+    </div>
+    <button class="lang-btn" id="langBtn">🌐 English</button>
+</nav>
+
+<section class="hero-carousel">
+    <div class="carousel-container">
+        <!-- Slide 1 -->
+        <div class="carousel-slide active">
+            <img src="media/hero-cover.png" alt="机器人" style="width:100%;height:100%;">
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <span class="slide-tag" data-key="s1_tag">智能分拣</span>
+                <h1 class="slide-title" data-key="s1_title">智能垃圾分类存储机器人</h1>
+                <p class="slide-desc" data-key="s1_desc">FPGA + 颜色传感器 + L610通信 · 全自动分类存储</p>
+                <div class="slide-line"></div>
+            </div>
+        </div>
+        <!-- Slide 2: 双传感器+MCU -->
+        <div class="carousel-slide">
+            <div style="display:flex; width:100%; height:100%;">
+                <div style="flex:1; display:flex; flex-direction:column;">
+                    <img src="media/tcs34725.png" style="width:100%; height:50%; object-fit:cover;">
+                    <img src="media/hc-sr04.png" style="width:100%; height:50%; object-fit:cover;">
+                </div>
+                <img src="media/mcu.png" style="flex:1; height:100%; object-fit:cover;">
+            </div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <span class="slide-tag" data-key="s2_tag">传感器融合</span>
+                <h1 class="slide-title" data-key="s2_title">颜色与距离双重感知</h1>
+                <p class="slide-desc" data-key="s2_desc">TCS34725颜色识别 + HC-SR04测距<br>串口指令下发，MCU返回测量数据</p>
+                <div class="slide-line"></div>
+            </div>
+        </div>
+        <!-- Slide 3: L610+上位机 -->
+        <div class="carousel-slide">
+            <div style="display:flex; width:100%; height:100%;">
+                <img src="media/l610.jpg" style="flex:1; height:100%; object-fit:cover; border-right:1px solid rgba(0,0,0,0.05);">
+                <img src="media/android-host.png" style="flex:1; height:100%; object-fit:cover;">
+            </div>
+            <div class="slide-overlay"></div>
+            <div class="slide-content">
+                <span class="slide-tag" data-key="s3_tag">物联网</span>
+                <h1 class="slide-title" data-key="s3_title">物联网实时监控</h1>
+                <p class="slide-desc" data-key="s3_desc">L610无线通信 · Android上位机 · 云端告警</p>
+                <div class="slide-line"></div>
+            </div>
+        </div>
+        <button class="carousel-btn prev">&#10094;</button>
+        <button class="carousel-btn next">&#10095;</button>
+        <div class="carousel-dots"><span class="dot active" data-index="0"></span><span class="dot" data-index="1"></span><span class="dot" data-index="2"></span></div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="sec-title"><span class="icon">▶</span><h2 data-key="video_title">演示视频</h2><div class="line"></div></div>
+    <div class="video-wrap">
+        <video controls>
+            <source src="media/video.mp4" type="video/mp4">
+        </video>
+    </div>
+    <p style="text-align:center; margin-top:12px; color:var(--text2); font-size:0.9rem;" data-key="video_desc">爆炸视图动画</p>
+</section>
+
+<section class="section">
+    <div class="sec-title"><span class="icon">⚙</span><h2 data-key="feat_title">核心功能</h2><div class="line"></div></div>
+    <div class="masonry" id="featureMasonry"></div>
+</section>
+
+<section class="section">
+    <div class="sec-title"><span class="icon">🔗</span><h2 data-key="arch_title">系统架构</h2><div class="line"></div></div>
+    <div class="arch-grid" id="archGrid"></div>
+</section>
+
+<footer>
+    <p data-key="footer">© 2026 智能垃圾分类存储机器人项目组</p>
+    <div class="line"></div>
+</footer>
+
+<script>
+(function(){
+    var slides=document.querySelectorAll('.carousel-slide');
+    var dots=document.querySelectorAll('.dot');
+    var prev=document.querySelector('.carousel-btn.prev');
+    var next=document.querySelector('.carousel-btn.next');
+    var idx=0,timer;
+    function go(n){
+        slides.forEach(function(s){s.classList.remove('active');});
+        dots.forEach(function(d){d.classList.remove('active');});
+        idx=(n+slides.length)%slides.length;
+        slides[idx].classList.add('active');
+        dots[idx].classList.add('active');
+    }
+    function nxt(){go(idx+1);}
+    function prv(){go(idx-1);}
+    function play(){clearInterval(timer);timer=setInterval(nxt,4500);}
+    function stop(){clearInterval(timer);}
+    slides.forEach(function(s){
+        var img=s.querySelector('img');
+        if(img)img.addEventListener('error',function(){this.style.display='none';});
+    });
+    next.addEventListener('click',function(){nxt();play();});
+    prev.addEventListener('click',function(){prv();play();});
+    dots.forEach(function(d){
+        d.addEventListener('click',function(){
+            go(parseInt(d.getAttribute('data-index')));
+            play();
+        });
+    });
+    var ct=document.querySelector('.carousel-container');
+    ct.addEventListener('mouseenter',stop);
+    ct.addEventListener('mouseleave',play);
+    var tx=0;
+    ct.addEventListener('touchstart',function(e){tx=e.changedTouches[0].screenX;stop();},{passive:true});
+    ct.addEventListener('touchend',function(e){
+        var t=e.changedTouches[0].screenX;
+        if(t<tx-40)nxt();if(t>tx+40)prv();
+        play();
+    });
+    play();
+})();
+</script>
+
+<script>
+    // 动态生成功能卡片（不规则布局）
+    const features = [
+        {icon:'🧠', t:'c1t', d:'c1d', sub:'c1_sub'},
+        {icon:'🎨', t:'c2t', d:'c2d', sub:'c2_sub'},
+        {icon:'📡', t:'c3t', d:'c3d', sub:'c3_sub'},
+        {icon:'📱', t:'c4t', d:'c4d', sub:'c4_sub'},
+        {icon:'👤', t:'c5t', d:'c5d', sub:'c5_sub'},
+        {icon:'🔧', t:'c6t', d:'c6d', sub:'c6_sub'}
+    ];
+    const featContainer = document.getElementById('featureMasonry');
+    features.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<div class="c-icon">${f.icon}</div><h3 data-key="${f.t}"></h3><p data-key="${f.d}"></p><span class="card-sub" data-key="${f.sub}"></span>`;
+        featContainer.appendChild(card);
+    });
+
+    // 架构卡片
+    const archs = [
+        {icon:'📱', t:'a1t', d:'a1d'},
+        {icon:'🔌', t:'a2t', d:'a2d'},
+        {icon:'⚡', t:'a3t', d:'a3d'},
+        {icon:'📡', t:'a4t', d:'a4d'},
+        {icon:'👁', t:'a5t', d:'a5d'},
+        {icon:'📏', t:'a6t', d:'a6d'}
+    ];
+    const archContainer = document.getElementById('archGrid');
+    archs.forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'arch-card';
+        card.innerHTML = `<div class="a-icon">${a.icon}</div><h4 data-key="${a.t}"></h4><p data-key="${a.d}"></p>`;
+        archContainer.appendChild(card);
+    });
+
+    // 翻译字典
+    const zh = {
+        nav_home:'首页', nav_about:'关于', nav_team:'团队', nav_phil:'理念',
+        s1_tag:'智能分拣', s1_title:'智能垃圾分类存储机器人', s1_desc:'FPGA + 颜色传感器 + L610通信 · 全自动分类存储',
+        s2_tag:'传感器融合', s2_title:'颜色与距离双重感知', s2_desc:'TCS34725颜色识别 + HC-SR04测距<br>串口指令下发，MCU返回测量数据',
+        s3_tag:'物联网', s3_title:'物联网实时监控', s3_desc:'L610无线通信 · Android上位机 · 云端告警',
+        video_title:'演示视频', video_desc:'爆炸视图动画',
+        feat_title:'核心功能',
+        c1t:'FPGA控制单元', c1d:'核心逻辑控制，驱动伺服电机，读取测距传感器数据', c1_sub:'Altera Cyclone IV',
+        c2t:'颜色传感器识别', c2d:'分辨3-4种颜色，确定垃圾种类，触发对应分类动作', c2_sub:'TCS3200 RGB Sensor',
+        c3t:'L610物联网通信', c3d:'实时上报垃圾桶状态至云端，满溢自动告警物业中心', c3_sub:'4G LTE Cat.1',
+        c4t:'Android上位机', c4d:'中英文语音引导，LCD显示余量，手机端实时查看状态', c4_sub:'Java + SQLite',
+        c5t:'测距安全防护', c5d:'确保用户在场且保持至少10cm距离，防止误触受伤', c5_sub:'HC-SR04 Ultrasonic',
+        c6t:'双模式运行', c6d:'操作模式全自动运行，维护模式GUI测试与调试', c6_sub:'Auto / Manual',
+        arch_title:'系统架构',
+        a1t:'Android上位机', a1d:'中英文切换 · 语音引导 · LCD显示 · 云端通信',
+        a2t:'微控制器单元', a2d:'命令生成 · 数据中转 · 与FPGA及云端通信',
+        a3t:'FPGA开发板', a3d:'电机控制 · 传感器读取 · 状态显示',
+        a4t:'L610无线模组', a4d:'4G通信 · 数据上报 · 告警推送',
+        a5t:'颜色传感器', a5d:'RGB识别 · 垃圾分类判定',
+        a6t:'测距传感器', a6d:'用户距离检测 · 10cm安全防护',
+        footer:'© 2026 智能垃圾分类存储机器人项目组'
+    };
+    const en = {
+        nav_home:'Home', nav_about:'About', nav_team:'Team', nav_phil:'Philosophy',
+        s1_tag:'Intelligent Sorting', s1_title:'Smart Garbage Sorting Robot', s1_desc:'FPGA + Color Sensor + L610 · Fully Automatic Sorting',
+        s2_tag:'Sensor Fusion', s2_title:'Dual Perception of Color & Distance', s2_desc:'TCS34725 color recognition + HC-SR04 ranging<br>Serial command interaction with MCU',
+        s3_tag:'IoT', s3_title:'Real-Time IoT Monitoring', s3_desc:'L610 Wireless · Android Host · Cloud Alert',
+        video_title:'Demo Video', video_desc:'Exploded View Animation',
+        feat_title:'Core Features',
+        c1t:'FPGA Control Unit', c1d:'Core logic control, servo motor drive, distance sensor reading', c1_sub:'Altera Cyclone IV',
+        c2t:'Color Sensor Recognition', c2d:'Distinguishes 3-4 colors, triggers sorting action', c2_sub:'TCS3200 RGB Sensor',
+        c3t:'L610 IoT Communication', c3d:'Real-time bin status reporting, auto alert when full', c3_sub:'4G LTE Cat.1',
+        c4t:'Android Host System', c4d:'Bilingual voice guidance, LCD display, mobile monitoring', c4_sub:'Java + SQLite',
+        c5t:'Distance Safety Shield', c5d:'User presence detection, 10cm minimum distance', c5_sub:'HC-SR04 Ultrasonic',
+        c6t:'Dual-Mode Operation', c6d:'Automatic operation / GUI maintenance mode', c6_sub:'Auto / Manual',
+        arch_title:'System Architecture',
+        a1t:'Android Host', a1d:'Bilingual · Voice Guidance · LCD · Cloud',
+        a2t:'Microcontroller Unit', a2d:'Command generation · Data relay · FPGA & Cloud',
+        a3t:'FPGA Board', a3d:'Motor control · Sensor reading · Status display',
+        a4t:'L610 Module', a4d:'4G communication · Data report · Alert push',
+        a5t:'Color Sensor', a5d:'RGB recognition · Waste classification',
+        a6t:'Distance Sensor', a6d:'User distance detection · 10cm safety',
+        footer:'© 2026 Smart Garbage Sorting Robot Team'
+    };
+    const dict = {zh, en};
+    let current = 'zh';
+    function applyLang(lang) {
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.dataset.key;
+            if (dict[lang][key]) el.innerHTML = dict[lang][key];
+        });
+    }
+    document.getElementById('langBtn').addEventListener('click', () => {
+        current = current === 'zh' ? 'en' : 'zh';
+        document.getElementById('langBtn').textContent = current === 'zh' ? '🌐 English' : '🌐 中文';
+        applyLang(current);
+    });
+    applyLang('zh');
+</script>
+</body>
+</html>

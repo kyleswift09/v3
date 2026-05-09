@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司理念 - 智能垃圾分类存储机器人</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f0eb; --card: rgba(255,255,255,0.75); --text: #2c2416; --text2: #6b5e4a;
+            --accent: #d4a853; --accent2: #8b6914; --border: rgba(0,0,0,0.06); --radius: 24px;
+            --font-body: 'Inter','Noto Sans SC',sans-serif;
+            --font-display: 'Space Grotesk','Noto Sans SC',sans-serif;
+            --font-accent: 'Georgia','Noto Sans SC',serif;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;background-image:radial-gradient(rgba(212,168,83,0.08) 1px,transparent 1px);background-size:40px 40px;}
+        .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.5);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 4%;display:flex;align-items:center;justify-content:space-between;height:64px;}
+        .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-family:var(--font-display);font-weight:700;font-size:1.2rem;}
+        .nav-logo span{color:var(--accent2);}
+        .nav-links{display:flex;gap:6px;}
+        .nav-links a{text-decoration:none;color:var(--text2);font-size:0.9rem;font-weight:500;padding:8px 16px;border-radius:40px;}
+        .nav-links a:hover,.nav-links a.active{background:var(--accent);color:#fff;}
+        .lang-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-size:0.85rem;font-weight:600;}
+        .lang-btn:hover{background:var(--accent2);}
+        .content{max-width:1000px;margin:0 auto;padding:100px 4% 50px;}
+        .hero{text-align:center;margin-bottom:50px;}
+        .hero h1{font-family:var(--font-accent);font-size:3rem;font-weight:900;}
+        .hero .line{width:60px;height:3px;background:var(--accent);margin:16px auto;}
+        .hero p{color:var(--text2);font-size:1.1rem;}
+
+        .big-quote{
+            text-align:center;padding:50px 20px;margin-bottom:40px;
+            border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+        }
+        .big-quote .q{font-family:var(--font-accent);font-size:2rem;font-weight:900;font-style:italic;color:var(--accent2);}
+        .big-quote .en{color:var(--text2);font-size:1rem;margin-top:8px;}
+
+        .split-row{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:40px;}
+        .split-card{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:var(--radius);padding:32px 26px;transition:0.3s;}
+        .split-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.05);border-color:var(--accent);}
+        .split-card h3{font-family:var(--font-display);font-size:1.3rem;color:var(--accent2);margin-bottom:14px;}
+        .split-card p{color:var(--text2);font-size:0.95rem;line-height:1.7;}
+
+        .value-list{display:flex;flex-direction:column;gap:16px;margin-bottom:40px;}
+        .value-item{display:flex;align-items:center;gap:20px;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;transition:0.3s;}
+        .value-item:hover{transform:translateX(6px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,0.04);}
+        .value-num{font-family:var(--font-accent);font-size:3rem;font-weight:900;color:var(--accent);opacity:0.3;flex-shrink:0;width:60px;text-align:center;}
+        .value-item h4{font-family:var(--font-display);font-size:1.1rem;color:var(--text);margin-bottom:4px;}
+        .value-item p{color:var(--text2);font-size:0.85rem;}
+        @media(max-width:768px){.split-row{grid-template-columns:1fr;}.hero h1{font-size:2.2rem;}}
+    </style>
+</head>
+<body>
+<nav class="nav">
+    <a href="index.html" class="nav-logo">♻ Smart<span>Sort</span></a>
+    <div class="nav-links">
+        <a href="index.html" data-key="nav_home">首页</a>
+        <a href="about.html" data-key="nav_about">关于</a>
+        <a href="team.html" data-key="nav_team">团队</a>
+        <a href="philosophy.html" class="active" data-key="nav_phil">理念</a>
+    </div>
+    <button class="lang-btn" id="langBtn">🌐 English</button>
+</nav>
+
+<div class="content">
+    <div class="hero">
+        <h1 data-key="title">公司理念</h1>
+        <div class="line"></div>
+        <p data-key="sub">垃圾分对有限公司 · SortRight Co., Ltd.</p>
+    </div>
+    <div class="big-quote">
+        <p class="q" data-key="quote">"垃圾分对，绿色未来"</p>
+        <p class="en" data-key="quote_sub">Sort Right, Green Future</p>
+    </div>
+    <div class="split-row">
+        <div class="split-card">
+            <h3>🎯 <span data-key="mission_title">我们的使命</span></h3>
+            <p data-key="mission_desc">用智能硬件和物联网技术，重新定义垃圾分类方式。让每一份垃圾都去到该去的地方，让分类零误差。</p>
+        </div>
+        <div class="split-card">
+            <h3>🔭 <span data-key="vision_title">我们的愿景</span></h3>
+            <p data-key="vision_desc">让每一座城市、每一个社区，都拥有全自动、零差错的垃圾分类存储系统，用科技守护绿色地球。</p>
+        </div>
+    </div>
+    <div class="value-list">
+        <div class="value-item">
+            <div class="value-num">01</div>
+            <div><h4 data-key="v1t">精准</h4><p data-key="v1d">颜色传感器毫秒级识别，分类准确率行业领先</p></div>
+        </div>
+        <div class="value-item">
+            <div class="value-num">02</div>
+            <div><h4 data-key="v2t">智能</h4><p data-key="v2d">FPGA核心控制，全自动运行，无需人工干预</p></div>
+        </div>
+        <div class="value-item">
+            <div class="value-num">03</div>
+            <div><h4 data-key="v3t">互联</h4><p data-key="v3d">L610实时上报，垃圾桶状态一手掌握</p></div>
+        </div>
+        <div class="value-item">
+            <div class="value-num">04</div>
+            <div><h4 data-key="v4t">责任</h4><p data-key="v4d">用科技守护环境，为绿色地球贡献力量</p></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const zh = {
+        nav_home:'首页',nav_about:'关于',nav_team:'团队',nav_phil:'理念',
+        title:'公司理念',sub:'垃圾分对有限公司 · SortRight Co., Ltd.',
+        quote:'"垃圾分对，绿色未来"',quote_sub:'Sort Right, Green Future',
+        mission_title:'我们的使命',mission_desc:'用智能硬件和物联网技术，重新定义垃圾分类方式。让每一份垃圾都去到该去的地方，让分类零误差。',
+        vision_title:'我们的愿景',vision_desc:'让每一座城市、每一个社区，都拥有全自动、零差错的垃圾分类存储系统，用科技守护绿色地球。',
+        v1t:'精准',v1d:'颜色传感器毫秒级识别，分类准确率行业领先',
+        v2t:'智能',v2d:'FPGA核心控制，全自动运行，无需人工干预',
+        v3t:'互联',v3d:'L610实时上报，垃圾桶状态一手掌握',
+        v4t:'责任',v4d:'用科技守护环境，为绿色地球贡献力量'
+    };
+    const en = {
+        nav_home:'Home',nav_about:'About',nav_team:'Team',nav_phil:'Philosophy',
+        title:'Our Philosophy',sub:'SortRight Co., Ltd.',
+        quote:'"Sort Right, Green Future"',quote_sub:'Sort Right, Green Future',
+        mission_title:'Our Mission',mission_desc:'Redefine garbage sorting with intelligent hardware and IoT technology. Let every piece of waste go where it belongs, with zero error.',
+        vision_title:'Our Vision',vision_desc:'Every city, every community equipped with fully automatic, zero-error garbage sorting systems. Protecting the green earth with technology.',
+        v1t:'Precision',v1d:'Millisecond color sensor recognition, industry-leading accuracy',
+        v2t:'Intelligence',v2d:'FPGA core control, fully automatic, no human intervention',
+        v3t:'Connectivity',v3d:'L610 real-time reporting, bin status at your fingertips',
+        v4t:'Responsibility',v4d:'Protecting the environment with technology, for a green planet'
+    };
+    const dict = {zh, en};
+    let current = 'zh';
+    function apply(lang) {
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.dataset.key;
+            if (dict[lang][key]) el.textContent = dict[lang][key];
+        });
+    }
+    document.getElementById('langBtn').addEventListener('click', () => {
+        current = current === 'zh' ? 'en' : 'zh';
+        document.getElementById('langBtn').textContent = current === 'zh' ? '🌐 English' : '🌐 中文';
+        apply(current);
+    });
+    apply('zh');
+</script>
+</body>
+</html>

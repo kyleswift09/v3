@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>团队成员 - 智能垃圾分类存储机器人</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f0eb; --card: rgba(255,255,255,0.75); --text: #2c2416; --text2: #6b5e4a;
+            --accent: #d4a853; --accent2: #8b6914; --border: rgba(0,0,0,0.06); --radius: 24px;
+            --font-body: 'Inter','Noto Sans SC',sans-serif;
+            --font-display: 'Space Grotesk','Noto Sans SC',sans-serif;
+            --font-accent: 'Georgia','Noto Sans SC',serif;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;background-image:radial-gradient(rgba(212,168,83,0.08) 1px,transparent 1px);background-size:40px 40px;}
+        .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.5);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 4%;display:flex;align-items:center;justify-content:space-between;height:64px;}
+        .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-family:var(--font-display);font-weight:700;font-size:1.2rem;}
+        .nav-logo span{color:var(--accent2);}
+        .nav-links{display:flex;gap:6px;}
+        .nav-links a{text-decoration:none;color:var(--text2);font-size:0.9rem;font-weight:500;padding:8px 16px;border-radius:40px;}
+        .nav-links a:hover,.nav-links a.active{background:var(--accent);color:#fff;}
+        .lang-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:40px;cursor:pointer;font-size:0.85rem;font-weight:600;}
+        .lang-btn:hover{background:var(--accent2);}
+        .content{max-width:1000px;margin:0 auto;padding:100px 4% 50px;}
+        .hero{text-align:center;margin-bottom:50px;}
+        .hero h1{font-family:var(--font-accent);font-size:2.8rem;font-weight:900;}
+        .hero .line{width:60px;height:3px;background:var(--accent);margin:16px auto;}
+        .hero p{color:var(--text2);font-size:1.1rem;}
+
+        .team-list{display:flex;flex-direction:column;gap:20px;}
+        .member{
+            display:flex;align-items:center;gap:24px;
+            background:var(--card); backdrop-filter:blur(12px);
+            border:1px solid var(--border);border-radius:var(--radius);
+            padding:24px 28px;transition:0.3s;
+        }
+        .member:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.05);border-color:var(--accent);}
+        .member-avatar{
+            width:70px;height:70px;border-radius:50%;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.8rem;color:#fff;flex-shrink:0;
+        }
+        .member-info h3{font-family:var(--font-display);font-size:1.2rem;margin-bottom:2px;}
+        .member-info .role{color:var(--accent2);font-size:0.85rem;font-weight:600;margin-bottom:8px;}
+        .member-info .detail{color:var(--text2);font-size:0.85rem;line-height:1.6;}
+        .member-info .detail span{font-weight:500;color:var(--text);}
+        @media(max-width:768px){
+            .member{flex-direction:column;text-align:center;}
+            .hero h1{font-size:2rem;}
+        }
+    </style>
+</head>
+<body>
+<nav class="nav">
+    <a href="index.html" class="nav-logo">♻ Smart<span>Sort</span></a>
+    <div class="nav-links">
+        <a href="index.html" data-key="nav_home">首页</a>
+        <a href="about.html" data-key="nav_about">关于</a>
+        <a href="team.html" class="active" data-key="nav_team">团队</a>
+        <a href="philosophy.html" data-key="nav_phil">理念</a>
+    </div>
+    <button class="lang-btn" id="langBtn">🌐 English</button>
+</nav>
+
+<div class="content">
+    <div class="hero">
+        <h1 data-key="title">团队成员</h1>
+        <div class="line"></div>
+        <p data-key="sub">第44组 · 垃圾分对有限公司</p>
+    </div>
+    <div class="team-list" id="teamList"></div>
+</div>
+
+<script>
+    const members = [
+        {name:'张豫江',role:'r1',id:'24019100044',phone:'138-0000-0001',emoji:'👨‍💼'},
+        {name:'洪晨凯',role:'r2',id:'24019100253',phone:'138-0000-0002',emoji:'👨‍💻'},
+        {name:'徐舒涵',role:'r3',id:'24019100583',phone:'138-0000-0003',emoji:'👩‍💼'},
+        {name:'王若旭',role:'r4',id:'24019100395',phone:'138-0000-0004',emoji:'👨‍🔧'},
+        {name:'蒋康',role:'r5',id:'24019100453',phone:'138-0000-0005',emoji:'👨‍🔧'},
+        {name:'董欣',role:'r6',id:'24019100349',phone:'138-0000-0006',emoji:'👩‍🔧'},
+        {name:'康瑞麟',role:'r7',id:'24019100023',phone:'138-0000-0007',emoji:'👨‍💻'}
+    ];
+    const container = document.getElementById('teamList');
+    members.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'member';
+        div.innerHTML = `
+            <div class="member-avatar">${m.emoji}</div>
+            <div class="member-info">
+                <h3>${m.name}</h3>
+                <p class="role" data-key="${m.role}"></p>
+                <p class="detail"><span data-key="label_id">学号：</span>${m.id} <span style="margin-left:20px;" data-key="label_phone">电话：</span>${m.phone}</p>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    const zh = {
+        nav_home:'首页',nav_about:'关于',nav_team:'团队',nav_phil:'理念',
+        title:'团队成员',sub:'第44组 · 垃圾分对有限公司',
+        label_id:'学号：',label_phone:'电话：',
+        r1:'项目经理 / 第二软件工程师',
+        r2:'首席软件工程师 / 首席网页设计师',
+        r3:'秘书 / 首席公关',
+        r4:'首席机械设计师 / 首席组装工程师',
+        r5:'首席电子和布线工程师 / 第二组装工程师',
+        r6:'第二电子和布线工程师 / 第二数字系统工程师',
+        r7:'首席数字系统工程师 / 第二网页设计师'
+    };
+    const en = {
+        nav_home:'Home',nav_about:'About',nav_team:'Team',nav_phil:'Philosophy',
+        title:'Team Members',sub:'Group 44 · SortRight Co., Ltd.',
+        label_id:'Student ID: ',label_phone:'Phone: ',
+        r1:'Project Manager / Second Software Engineer',
+        r2:'Chief Software Engineer / Chief Web Designer',
+        r3:'Secretary / Chief Public Relations',
+        r4:'Chief Mechanical Designer / Chief Assembly Engineer',
+        r5:'Chief Electronics & Wiring Engineer / Second Assembly Engineer',
+        r6:'Second Electronics & Wiring Engineer / Second Digital System Engineer',
+        r7:'Chief Digital System Engineer / Second Web Designer'
+    };
+    const dict = {zh, en};
+    let current = 'zh';
+    function apply(lang) {
+        document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.dataset.key;
+            if (dict[lang][key]) el.textContent = dict[lang][key];
+        });
+    }
+    document.getElementById('langBtn').addEventListener('click', () => {
+        current = current === 'zh' ? 'en' : 'zh';
+        document.getElementById('langBtn').textContent = current === 'zh' ? '🌐 English' : '🌐 中文';
+        apply(current);
+    });
+    apply('zh');
+</script>
+</body>
+</html>
